@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
@@ -31,3 +32,31 @@ build/
 
 ### VS Code ###
 .vscode/
+=======
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment and secrets
+.env
+application-local.properties
+
+# Database
+*.db
+*.mv.db
+>>>>>>> 1d0eb5c4d0aeaeff40d286f271c0dcfe4366d847
