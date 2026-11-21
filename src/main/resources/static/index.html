@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow | Smart Issue Tracking & Allocation System</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div class="brand-title">TaskFlow</div>
+      </div>
+
+      <nav class="nav-menu">
+        <a class="nav-item active" data-tab="dashboard-tab">
+          <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </a>
+        <a class="nav-item" id="nav-projects" data-tab="projects-tab">
+          <i class="fa-solid fa-folder-kanban"></i> Projects
+        </a>
+        <a class="nav-item" data-tab="tasks-tab">
+          <i class="fa-solid fa-list-check"></i> Tasks
+        </a>
+        <a class="nav-item" id="nav-smart-alloc" data-tab="smart-alloc-tab">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Smart Allocation
+        </a>
+        <a class="nav-item" id="nav-reports" data-tab="reports-tab" style="display: none;">
+          <i class="fa-solid fa-chart-bar"></i> Reports
+        </a>
+        <a class="nav-item" id="nav-users" data-tab="users-tab" style="display: none;">
+          <i class="fa-solid fa-users-gear"></i> Manage Users
+        </a>
+      </nav>
+
+      <div class="user-profile" id="user-profile-box">
+        <div class="user-avatar" id="avatar-circle">U</div>
+        <div class="user-info">
+          <span class="user-name" id="profile-name">Not Logged In</span>
+          <span class="user-role-badge role-developer" id="profile-role">GUEST</span>
+        </div>
+        <button class="btn-logout" id="btn-logout-trigger" title="Logout">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1 class="page-title" id="active-tab-heading">Dashboard Analytics</h1>
+        <div class="top-bar-actions">
+          <button class="theme-toggle" id="theme-toggle-btn" title="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+
+          <button class="btn btn-secondary" id="btn-open-login" style="display: none;">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </button>
+
+          <button class="btn btn-primary" id="btn-new-project" style="display: none;">
+            <i class="fa-solid fa-folder-plus"></i> New Project
+          </button>
+          <button class="btn btn-primary" id="btn-new-task" style="display: none;">
+            <i class="fa-solid fa-plus"></i> New Task
+          </button>
+          <button class="btn btn-secondary" id="btn-download-report" style="display: none; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none;" title="Download Developer Performance Report">
+            <i class="fa-solid fa-file-arrow-down"></i> Download Developer Report
+          </button>
+        </div>
+      </header>
+
+      <div class="content-body">
+        <!-- 1. Dashboard Tab -->
+        <section class="tab-content active" id="dashboard-tab">
+          <div class="dashboard-grid">
+            <div class="metric-card">
+              <div class="metric-header">
+                <span>TOTAL PROJECTS</span>
+                <div class="metric-icon" style="background: rgba(99, 102, 241, 0.15); color: #6366f1;">
+                  <i class="fa-solid fa-folder"></i>
+                </div>
+              </div>
+              <div class="metric-value" id="metric-projects">0</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-header">
+                <span>TOTAL TASKS</span>
+                <div class="metric-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+                  <i class="fa-solid fa-tasks"></i>
+                </div>
+              </div>
+              <div class="metric-value" id="metric-tasks">0</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-header">
+                <span>COMPLETED</span>
+                <div class="metric-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+              </div>
+              <div class="metric-value" id="metric-completed">0</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-header">
+                <span>PENDING</span>
+                <div class="metric-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+              </div>
+              <div class="metric-value" id="metric-pending">0</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-header">
+                <span>IN TESTING</span>
+                <div class="metric-icon" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+                  <i class="fa-solid fa-vial"></i>
+                </div>
+              </div>
+              <div class="metric-value" id="metric-testing">0</div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-header">
+                <span>CRITICAL PRIORITY</span>
+                <div class="metric-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+              </div>
+              <div class="metric-value" id="metric-critical">0</div>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 16px;">Quick Workload Overview</h3>
+            <div id="dashboard-task-preview" class="task-grid"></div>
+          </div>
+        </section>
+
+        <!-- 2. Projects Tab -->
+        <section class="tab-content" id="projects-tab">
+          <div class="task-grid" id="projects-grid"></div>
+        </section>
+
+        <!-- 3. Tasks Tab -->
+        <section class="tab-content" id="tasks-tab">
+          <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+            <button class="btn btn-secondary task-filter-btn active" data-filter="ALL">All Tasks</button>
+            <button class="btn btn-secondary task-filter-btn" data-filter="MY_TASKS">My Assigned Tasks</button>
+            <button class="btn btn-secondary task-filter-btn" data-filter="CRITICAL">Critical Only</button>
+          </div>
+          <div class="task-grid" id="tasks-grid"></div>
+        </section>
+
+        <!-- 4. Smart Allocation Tab -->
+        <section class="tab-content" id="smart-alloc-tab">
+          <div
+            style="background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); margin-bottom: 24px;">
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">
+              <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent-secondary);"></i> Smart Workload
+              Allocation Algorithm
+            </h3>
+            <p style="color: var(--text-muted); font-size: 14px; line-height: 1.6;">
+              Queries developers with active task loads &lt; 5 (Status in TODO, IN_PROGRESS, TESTING), sorted ascending
+              by workload to recommend ideal task assignees.
+            </p>
+          </div>
+          <div class="developer-grid" id="smart-alloc-grid"></div>
+        </section>
+
+        <!-- 5. Reports Tab (ADMIN/MANAGER) -->
+        <section class="tab-content" id="reports-tab">
+          <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">
+                <i class="fa-solid fa-chart-bar" style="color: var(--accent-primary);"></i> Developer Performance & Accuracy Report
+              </h3>
+              <p style="color: var(--text-muted); font-size: 14px;">Per-developer task metrics: completion rate, resolution time, and workload breakdown.</p>
+            </div>
+            <button class="btn btn-primary" id="btn-export-report-csv" style="background: linear-gradient(135deg, #10b981, #059669); border: none; white-space: nowrap;">
+              <i class="fa-solid fa-file-arrow-down"></i> Export CSV
+            </button>
+          </div>
+          <div id="reports-table-container">
+            <table id="reports-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <thead>
+                <tr style="background: var(--bg-primary); color: var(--text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em;">
+                  <th style="padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-glass);">ID</th>
+                  <th style="padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-glass);">Developer</th>
+                  <th style="padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-glass);">Email</th>
+                  <th style="padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border-glass);">Total</th>
+                  <th style="padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border-glass);">In Progress</th>
+                  <th style="padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border-glass);">Completed</th>
+                  <th style="padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border-glass);">Completion Rate</th>
+                  <th style="padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border-glass);">Avg Resolution (hrs)</th>
+                  <th style="padding: 12px 16px; text-align: center; border-bottom: 1px solid var(--border-glass);">Avg Resolution (days)</th>
+                </tr>
+              </thead>
+              <tbody id="reports-table-body"></tbody>
+            </table>
+            <p id="reports-empty-msg" style="display:none; color: var(--text-muted); padding: 24px;">No developer data available.</p>
+          </div>
+        </section>
+
+        <!-- 6. Users Tab (ADMIN Only) -->
+        <section class="tab-content" id="users-tab">
+          <div style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+            <h3>User Directory</h3>
+            <button class="btn btn-primary" id="btn-create-user-modal">
+              <i class="fa-solid fa-user-plus"></i> Add New User
+            </button>
+          </div>
+          <div class="developer-grid" id="users-grid"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- CREATE USER MODAL -->
+  <div class="modal-overlay" id="create-user-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Create New User</h2>
+        <button class="close-btn close-modal-btn" type="button" aria-label="Close">&times;</button>
+      </div>
+      <form id="create-user-form">
+        <div class="form-group">
+          <label class="form-label" for="user-name">Name</label>
+          <input type="text" class="form-control" id="user-name" name="name" required maxlength="120" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="user-email">Email Address</label>
+          <input type="email" class="form-control" id="user-email" name="email" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="user-password">Password</label>
+          <input type="password" class="form-control" id="user-password" name="password" required minlength="6" autocomplete="new-password">
+          <small class="form-hint">Use at least 6 characters.</small>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="user-role">Role</label>
+          <select class="form-control" id="user-role" name="role" required>
+            <option value="DEVELOPER">Developer</option>
+            <option value="MANAGER">Manager</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" id="user-create-submit" style="width: 100%; margin-top: 10px;">
+          Create User
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- AUTH / LOGIN MODAL -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fa-solid fa-lock" style="color: var(--accent-primary);"></i> TaskFlow
+          Authentication</h2>
+      </div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="login-email" required placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" id="login-password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+          <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CREATE PROJECT MODAL -->
+  <div class="modal-overlay" id="create-project-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Create New Project</h2>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+      <form id="create-project-form">
+        <div class="form-group">
+          <label class="form-label">Project Title</label>
+          <input type="text" class="form-control" id="proj-title" required placeholder="e.g. Mobile App Engine">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="proj-desc" rows="3"
+            placeholder="Project goals and technical scope..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assign Manager</label>
+          <select class="form-control" id="proj-manager-select" required></select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Create Project</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CREATE TASK MODAL -->
+  <div class="modal-overlay" id="create-task-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">Create New Task</h2>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+      <form id="create-task-form">
+        <div class="form-group">
+          <label class="form-label">Task Title</label>
+          <input type="text" class="form-control" id="task-title" required placeholder="e.g. Implement OAuth Flow">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="task-desc" rows="3" placeholder="Detailed requirements..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Project</label>
+          <select class="form-control" id="task-project-select" required></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Priority</label>
+          <select class="form-control" id="task-priority-select">
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM" selected>MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+            <option value="CRITICAL">CRITICAL</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assignee</label>
+          <select class="form-control" id="task-assignee-select"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Due Date</label>
+          <input type="date" class="form-control" id="task-duedate">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Create Task</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- COMMENTS & ACTIVITY LOG MODAL -->
+  <div class="modal-overlay" id="comments-modal">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="comments-modal-title">Task Discussion & Activity</h2>
+        <button class="close-btn close-modal-btn">&times;</button>
+      </div>
+
+      <div style="max-height: 250px; overflow-y: auto; margin-bottom: 20px; padding-right: 8px;">
+        <h4 style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Comments</h4>
+        <div id="comments-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      </div>
+
+      <form id="add-comment-form" style="margin-bottom: 20px;">
+        <div class="form-group" style="display: flex; gap: 8px;">
+          <input type="text" class="form-control" id="comment-text-input" required placeholder="Write a comment..."
+            style="flex: 1;">
+          <button type="submit" class="btn btn-primary">Post</button>
+        </div>
+      </form>
+
+      <h4 style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Activity Audit History</h4>
+      <div id="activity-logs-list"
+        style="max-height: 150px; overflow-y: auto; font-size: 12px; display: flex; flex-direction: column; gap: 6px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
